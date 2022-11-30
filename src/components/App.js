@@ -1,7 +1,13 @@
 // Fichero src/components/App.js
 import '../styles/App.scss';
 import { useEffect, useState } from 'react';
-import getWords from '../../src/services/api'
+import getWords from '../../src/services/api';
+import Header from './Header';
+import Dummy from './Dummy';
+import SolutionLetter from './SolutionLetter';
+import ErrorLetters from './ErrorLetters';
+import Form from './Form';
+
 // import React from 'react';
 
 function App() {
@@ -11,22 +17,22 @@ function App() {
   const [userLetters, setUserLetters] = useState([]);
 
 
-  useEffect (() => {
-    getWords().then (data => {
+  useEffect(() => {
+    getWords().then(data => {
       setWord(data.word);
       console.log(data.word)
     });
-  },[]);
+  }, []);
 
-  const handleClickLetter = (event) => {
+  const handleClickLetter = (value) => {
     const wordLetters = word.split('');
     let re = /^[a-zA-ZñÑá-úÁ-Ú´]$/;
-    if (re.test(event.target.value) || event.target.value === '') {
-      setlastLetter(event.target.value);
-      if (event.target.value !== '') {
-        setUserLetters([...userLetters, event.target.value]);
-        }
+    if (re.test(value) || value === '') {
+      setlastLetter(value);
+      if (value !== '') {
+        setUserLetters([...userLetters, value]);
       }
+    }
   };
 
   const renderSolutionLetters = () => {
@@ -46,7 +52,7 @@ function App() {
   const renderErrorLetters = () => {
     const wordLetters = word.split('');
     return userLetters.map((eachLetter, index) => {
-      if (!wordLetters.includes(eachLetter)) {  
+      if (!wordLetters.includes(eachLetter)) {
         return (
           <li key={index} className="letter">
             {eachLetter}
@@ -56,61 +62,27 @@ function App() {
     });
   };
   const error = () => {
-    const errorLetter = userLetters.filter((each)=> word.includes(each) === false );
+    const errorLetter = userLetters.filter((each) => word.includes(each) === false);
     return errorLetter.length;
   };
   return (
     <div className="page">
-      <header>
-        <h1 className="header__title">Juego del ahorcado</h1>
-      </header>
+      <Header />
       <main className="main">
         <section>
-          <div className="solution">
-            <h2 className="title">Solución:</h2>
-
-            <ul className="letters">{renderSolutionLetters()}</ul>
-          </div>
-          <div className="error">
-            <h2 className="title">Letras falladas:</h2>
-            <ul className="letters">{renderErrorLetters()}</ul>
-          </div>
-          <form className="form">
-            <label className="title" htmlFor="last-letter">
-              Escribe una letra:
-            </label>
-            <input
-              autoComplete="off"
-              className="form__input"
-              maxLength="1"
-              type="text"
-              name="last-letter"
-              id="last-letter"
-              onChange={handleClickLetter}
-              value={lastLetter}
-            />
-          </form>
+          <SolutionLetter
+            renderSolutionLetters={renderSolutionLetters()} />
+          <ErrorLetters renderErrorLetters={renderErrorLetters()} />
+          <Form
+            lastLetter={lastLetter}
+            handleClickLetter={handleClickLetter} />
           {/* <button onClick={handleClick}>Incrementar</button> */}
         </section>
+        <Dummy error={error()} />
 
-        <section className={`dummy error-${error()}`}>
-          <span className="error-13 eye"></span>
-          <span className="error-12 eye"></span>
-          <span className="error-11 line"></span>
-          <span className="error-10 line"></span>
-          <span className="error-9 line"></span>
-          <span className="error-8 line"></span>
-          <span className="error-7 line"></span>
-          <span className="error-6 head"></span>
-          <span className="error-5 line"></span>
-          <span className="error-4 line"></span>
-          <span className="error-3 line"></span>
-          <span className="error-2 line"></span>
-          <span className="error-1 line"></span>
-        </section>
       </main>
     </div>
   );
-  }
+}
 
 export default App;
