@@ -7,6 +7,10 @@ import Dummy from './Dummy';
 import SolutionLetter from './SolutionLetter';
 import ErrorLetters from './ErrorLetters';
 import Form from './Form';
+import Footer from './Footer'
+import {Route, Router, Routes} from 'react-router-dom';
+import Instructions from './Instructions';
+import Options from './Options';
 
 // import React from 'react';
 
@@ -70,17 +74,26 @@ function App() {
       <Header />
       <main className="main">
         <section>
-          <SolutionLetter
+      
+          <Routes>
+            <Route path='/instructions' element={<Instructions></Instructions>}></Route>
+            <Route path='/options' element={<Options></Options>}></Route>
+            <Route path='/' element={  <>  <SolutionLetter
             renderSolutionLetters={renderSolutionLetters()} />
           <ErrorLetters renderErrorLetters={renderErrorLetters()} />
           <Form
             lastLetter={lastLetter}
             handleClickLetter={handleClickLetter} />
-          {/* <button onClick={handleClick}>Incrementar</button> */}
+            </>}></Route>
+
+          </Routes>
+         
         </section>
         <Dummy error={error()} />
 
       </main>
+      <Footer></Footer>
+
     </div>
   );
 }
