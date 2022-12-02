@@ -1,7 +1,8 @@
 import '../styles/components/Form.scss'
-const Form = (props) => {
+const Form = ({ lastLetter = 'a', handleClickLetter }) => {//props desestructurado y con valor por defecto, por si acaso
+
     const handleInputLetter = (ev) => {
-        props.handleClickLetter(ev.target.value)
+        handleClickLetter(ev.target.value)
 
     }
     return (
@@ -17,7 +18,7 @@ const Form = (props) => {
                 name="last-letter"
                 id="last-letter"
                 onChange={handleInputLetter}
-                value={props.lastLetter}
+                value={lastLetter}
             />
         </form>
     )

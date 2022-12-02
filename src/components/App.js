@@ -8,9 +8,12 @@ import SolutionLetter from './SolutionLetter';
 import ErrorLetters from './ErrorLetters';
 import Form from './Form';
 import Footer from './Footer'
-import {Route, Router, Routes} from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Instructions from './Instructions';
 import Options from './Options';
+import Loading from './Loading';
+
+
 
 // import React from 'react';
 
@@ -19,6 +22,7 @@ function App() {
   const [lastLetter, setlastLetter] = useState('');
   const [word, setWord] = useState('');
   const [userLetters, setUserLetters] = useState([]);
+
 
 
   useEffect(() => {
@@ -74,20 +78,20 @@ function App() {
       <Header />
       <main className="main">
         <section>
-      
+
           <Routes>
             <Route path='/instructions' element={<Instructions></Instructions>}></Route>
             <Route path='/options' element={<Options></Options>}></Route>
-            <Route path='/' element={  <>  <SolutionLetter
-            renderSolutionLetters={renderSolutionLetters()} />
-          <ErrorLetters renderErrorLetters={renderErrorLetters()} />
-          <Form
-            lastLetter={lastLetter}
-            handleClickLetter={handleClickLetter} />
+            <Route path='/' element={word === '' ? <Loading /> : <><SolutionLetter
+              renderSolutionLetters={renderSolutionLetters()} />
+              <ErrorLetters renderErrorLetters={renderErrorLetters()} />
+              <Form
+                lastLetter={lastLetter}
+                handleClickLetter={handleClickLetter} />
             </>}></Route>
 
           </Routes>
-         
+
         </section>
         <Dummy error={error()} />
 
